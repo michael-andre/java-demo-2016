@@ -51,14 +51,14 @@ public class Main {
         Rectangle r = new Rectangle();
         r.setWidth(200);
         r.setHeight(100);
-        r.setX(20);
-        r.setY(50);
+        r.setOrigin(new Point(20, 50));
+        r = new Rectangle(new Point(40, 60), 200, 300);
 
         // Thanks to polymorphism, an instance of Rectangle can be the value of a variable declared as Shape.
         // But only properties & methods declared in Shape are available on s, even if the actual value is a Rectangle.
         Shape s = r;
         // x and y are available because they are declared is Shape, but width and height are not.
-        System.out.println("Position: " + s.getX() + "; " + s.getY());
+        System.out.println("Shape: " + s);
         // getArea() is available because it is declared in Shape (abstractly), even is the concrete implementation is in Rectangle.
         System.out.println("Area: " + s.getArea());
 
@@ -77,7 +77,7 @@ public class Main {
 
         // The List interface exposes a generic type parameter.
         // The type parameter defines the signature of methods such as add().
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add("2");
         list.add("toto");
         list.add("true");

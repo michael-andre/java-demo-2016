@@ -8,6 +8,13 @@ public class Circle extends Shape {
     // Specific to a Circle.
     private int radius;
 
+    public Circle() { }
+
+    public Circle(Point origin, int radius) {
+        super(origin);
+        this.radius = radius;
+    }
+
     public int getRadius() {
         return radius;
     }
@@ -29,4 +36,8 @@ public class Circle extends Shape {
 
     }
 
+    @Override
+    public String toString() {
+        return "Circle { " + super.toString() + "; radius=" + radius + " }";
+    }
 }

@@ -13,24 +13,21 @@ public abstract class Shape implements Drawable {
     // ...but we choose to encapsulate them as private fields with public getters and setters.
     // The array must be instantiated with a value to avoid a NullPointerException on access.
     // The value itself will not change (but the content of the array will), we mark it 'final'.
-    private final int[] origin = new int[2];
+    private Point origin;
+
+    public Shape() { }
+
+    public Shape(Point origin) {
+        this.origin = origin;
+    }
 
     // Getter hides the implementation from the outside.
-    public int getX() {
-        return origin[0];
+    public Point getOrigin() {
+        return origin;
     }
 
-    public int getY() {
-        return origin[1];
-    }
-
-    // Setter hides the implementation from the outside.
-    public void setX(int x) {
-        origin[0] = x;
-    }
-
-    public void setY(int y) {
-        origin[1] = y;
+    public void setOrigin(Point origin) {
+        this.origin = origin;
     }
 
     /**
@@ -40,5 +37,10 @@ public abstract class Shape implements Drawable {
     // This method is abstract: is has only a declaration and no implementation (body).
     // The implementation must be provided by each subclass, they will have to @Override this method.
     public abstract double getArea();
+
+    @Override
+    public String toString() {
+        return "origin=" + origin;
+    }
 
 }

@@ -8,8 +8,16 @@ package fr.ecp.sio.demo.model;
 public class Rectangle extends Shape {
 
     // Here we only need to declare additional properties specific to a Rectangle.
-    private int width = 10;
-    private int height = 10;
+    private int width;
+    private int height;
+
+    public Rectangle() { }
+
+    public Rectangle(Point origin, int width, int height) {
+        super(origin);
+        this.width = width;
+        this.height = height;
+    }
 
     public int getWidth() {
         return width;
@@ -37,6 +45,11 @@ public class Rectangle extends Shape {
     @Override
     public void draw() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "Rectangle { " + super.toString() + "; width=" + width + "; height=" + height + " }";
     }
 
 }
