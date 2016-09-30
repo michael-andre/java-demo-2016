@@ -4,9 +4,11 @@ package fr.ecp.sio.demo;
 
 // All classes referenced in the file that doesn't belong to the same package (strictly) require an import.
 // Imported classes can then be referred with their short name.
-import fr.ecp.sio.demo.model.Circle;
-import fr.ecp.sio.demo.model.Rectangle;
-import fr.ecp.sio.demo.model.Shape;
+import com.sun.org.apache.regexp.internal.RE;
+import fr.ecp.sio.demo.model.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // Everything is object in Java, so the entry point of this console application must be in a class.
 // There is always one class per file, and the filename must match the name of the class.
@@ -47,16 +49,16 @@ public class Main {
 
         // Create as instance of the class Rectangle an assign some properties.
         Rectangle r = new Rectangle();
-        r.width = 200;
-        r.height = 100;
-        r.x = 20;
-        r.y = 50;
+        r.setWidth(200);
+        r.setHeight(100);
+        r.setX(20);
+        r.setY(50);
 
         // Thanks to polymorphism, an instance of Rectangle can be the value of a variable declared as Shape.
         // But only properties & methods declared in Shape are available on s, even if the actual value is a Rectangle.
         Shape s = r;
         // x and y are available because they are declared is Shape, but width and height are not.
-        System.out.println("Position: " + s.x + "; " + s.y);
+        System.out.println("Position: " + s.getX() + "; " + s.getY());
         // getArea() is available because it is declared in Shape (abstractly), even is the concrete implementation is in Rectangle.
         System.out.println("Area: " + s.getArea());
 
@@ -64,8 +66,24 @@ public class Main {
         if (s instanceof Rectangle) {
             // Since we checked, we can safely "cast" the variable to a Rectangle an access the specific properties.
             // But this style of coding can lead to runtime errors (vs compile-time errors), so use with caution!
-            ((Rectangle) s).width = 2;
+            ((Rectangle) s).setWidth(2);
         }
+
+        // Arrays must be instantiated with a fixed size.
+        double[] array = new double[3];
+        array = new double[] { 1.2, 3.8 };
+        array[1] = 2;
+        System.out.println("Array size is " + array.length);
+
+        // The List interface exposes a generic type parameter.
+        // The type parameter defines the signature of methods such as add().
+        List<String> list = new ArrayList<String>();
+        list.add("2");
+        list.add("toto");
+        list.add("true");
+        list.remove(1);
+        System.out.println("List size is " + list.size());
+        list.get(1);
 
     }
 }
