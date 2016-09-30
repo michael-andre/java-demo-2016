@@ -27,13 +27,14 @@ public class Circle extends Shape {
     @Override
     public double getArea() {
         // The java.lang.Math exposes static methods and constants for maths.
+        // Math is a 'helper class': all methods are static and it cannot be instantiated.
         // Classes in java.lang.* package doesn't need an import declaration.
         return Math.pow(radius, 2) * Math.PI;
     }
 
     @Override
     public void draw() {
-
+        // TODO
     }
 
     @Override

@@ -5,6 +5,7 @@ package fr.ecp.sio.demo.model;
  */
 public interface Drawable {
 
+    // No need to add a visibility modifier on a method in an interface: only public makes sense.
     void draw();
 
 }
