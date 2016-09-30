@@ -14,7 +14,6 @@ public class Main {
 
     // The main() method is the entry point of our application.
     // It receives an array of strings as a parameters with optional arguments specified on execution.
-    // TODO: Explain the static keyword.
     public static void main(String[] args) {
 
         // Primitive types
