@@ -29,7 +29,20 @@ public class Polygon extends Shape {
 
     @Override
     public void draw(Graphics g) {
-        // TODO
+        int size = points.size();
+        int[] x = new int[size];
+        int[] y = new int[size];
+        /*for (int i = 0; i < points.size(); i++) {
+            x[i] = points.get(i).getX();
+            y[i] = points.get(i).getY();
+        }*/
+        int i = 0;
+        for (Point p : points) {
+            x[i] = p.getX() + getOrigin().getX();
+            y[i] = p.getY() + getOrigin().getY();
+            i++;
+        }
+        g.drawPolygon(x, y, size);
     }
 
     /*

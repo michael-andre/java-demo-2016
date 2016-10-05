@@ -53,7 +53,7 @@ public class Rectangle extends Shape {
 
     @Override
     public void draw(Graphics g) {
-        // TODO
+        g.drawRect(getOrigin().getX(), getOrigin().getY(), width, height);
     }
 
     @Override

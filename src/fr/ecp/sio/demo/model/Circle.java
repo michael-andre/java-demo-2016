@@ -36,7 +36,7 @@ public class Circle extends Shape {
 
     @Override
     public void draw(Graphics g) {
-        // TODO
+        g.drawOval(getOrigin().getX(), getOrigin().getY(), radius * 2, radius * 2);
     }
 
     @Override

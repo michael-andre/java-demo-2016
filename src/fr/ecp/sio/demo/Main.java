@@ -4,9 +4,9 @@ package fr.ecp.sio.demo;
 
 // All classes referenced in the file that doesn't belong to the same package (strictly) require an import.
 // Imported classes can then be referred with their short name.
-import com.sun.org.apache.regexp.internal.RE;
 import fr.ecp.sio.demo.model.*;
 import fr.ecp.sio.demo.model.Point;
+import fr.ecp.sio.demo.model.Polygon;
 import fr.ecp.sio.demo.model.Rectangle;
 import fr.ecp.sio.demo.model.Shape;
 import fr.ecp.sio.demo.ui.DrawablePanel;
@@ -72,7 +72,7 @@ public class Main {
         if (s instanceof Rectangle) {
             // Since we checked, we can safely "cast" the variable to a Rectangle an access the specific properties.
             // But this style of coding can lead to runtime errors (vs compile-time errors), so use with caution!
-            ((Rectangle) s).setWidth(2);
+            ((Rectangle) s).setWidth(200);
         }
 
         // Arrays must be instantiated with a fixed size.
@@ -91,16 +91,24 @@ public class Main {
         System.out.println("List size is " + list.size());
         list.get(1);
 
+        List<DrawablePanel.Drawable> drawables = new ArrayList<>();
+        drawables.add(r);
+        drawables.add(new Circle(new Point(300, 150), 70));
+        Polygon polygon = new Polygon();
+        polygon.setOrigin(new Point(60, 70));
+        polygon.addPoint(new Point(200, 100));
+        polygon.addPoint(new Point(100, 200));
+        polygon.addPoint(new Point(-50, 150));
+        drawables.add(polygon);
+
+        DrawablePanel panel = new DrawablePanel(drawables);
+        panel.setBackground(Color.WHITE);
+
         JFrame window = new JFrame("Photoshop");
         window.setSize(640, 480);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        window.setVisible(true);
-
-        List<DrawablePanel.Drawable> drawables = new ArrayList<>();
-        drawables.add(r);
-        DrawablePanel panel = new DrawablePanel(drawables);
-        panel.setBackground(Color.WHITE);
         window.add(panel);
+        window.setVisible(true);
 
     }
 }
