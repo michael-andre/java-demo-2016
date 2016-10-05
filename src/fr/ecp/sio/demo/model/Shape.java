@@ -1,12 +1,14 @@
 package fr.ecp.sio.demo.model;
 
+import fr.ecp.sio.demo.ui.DrawablePanel;
+
 /**
  * A base class for all shapes.
  */
 // This class has to be declared abstract because it has at least one abstract method.
 // As a consequence, this class cannot be instantiated (new Shape()), it can only be subclassed.
 // This class also implements Drawable but does not provide an implementation for onDraw(): subclasses will have to do it.
-public abstract class Shape implements Drawable {
+public abstract class Shape implements DrawablePanel.Drawable {
 
     // Here we declare properties common to all shapes.
     // Properties are strongly typed (declared with a type) and can optionally be given a default value.

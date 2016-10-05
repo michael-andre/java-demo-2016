@@ -1,5 +1,7 @@
 package fr.ecp.sio.demo.model;
 
+import java.awt.*;
+
 /**
  * A circular shape.
  */
@@ -33,7 +35,7 @@ public class Circle extends Shape {
     }
 
     @Override
-    public void draw() {
+    public void draw(Graphics g) {
         // TODO
     }
 

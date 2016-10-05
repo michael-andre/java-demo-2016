@@ -6,7 +6,13 @@ package fr.ecp.sio.demo;
 // Imported classes can then be referred with their short name.
 import com.sun.org.apache.regexp.internal.RE;
 import fr.ecp.sio.demo.model.*;
+import fr.ecp.sio.demo.model.Point;
+import fr.ecp.sio.demo.model.Rectangle;
+import fr.ecp.sio.demo.model.Shape;
+import fr.ecp.sio.demo.ui.DrawablePanel;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,6 +90,17 @@ public class Main {
         list.remove(1);
         System.out.println("List size is " + list.size());
         list.get(1);
+
+        JFrame window = new JFrame("Photoshop");
+        window.setSize(640, 480);
+        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        window.setVisible(true);
+
+        List<DrawablePanel.Drawable> drawables = new ArrayList<>();
+        drawables.add(r);
+        DrawablePanel panel = new DrawablePanel(drawables);
+        panel.setBackground(Color.WHITE);
+        window.add(panel);
 
     }
 }

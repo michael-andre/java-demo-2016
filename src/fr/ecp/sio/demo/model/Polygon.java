@@ -1,5 +1,6 @@
 package fr.ecp.sio.demo.model;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class Polygon extends Shape {
     }
 
     @Override
-    public void draw() {
+    public void draw(Graphics g) {
         // TODO
     }
 

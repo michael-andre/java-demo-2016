@@ -1,5 +1,7 @@
 package fr.ecp.sio.demo.model;
 
+import java.awt.*;
+
 /**
  * A rectangular shape
  */
@@ -50,7 +52,7 @@ public class Rectangle extends Shape {
     }
 
     @Override
-    public void draw() {
+    public void draw(Graphics g) {
         // TODO
     }
 
