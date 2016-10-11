@@ -36,6 +36,7 @@ public class Circle extends Shape {
 
     @Override
     public void draw(Graphics g) {
+        // Simply use the drawOval() method from g to display the circle.
         g.drawOval(getOrigin().getX(), getOrigin().getY(), radius * 2, radius * 2);
     }
 

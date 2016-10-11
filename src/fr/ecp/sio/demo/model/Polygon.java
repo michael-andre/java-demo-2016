@@ -29,13 +29,17 @@ public class Polygon extends Shape {
 
     @Override
     public void draw(Graphics g) {
+        // The drawing of the polygon requires a bit of manipulations.
+        // The drawPolygon() method on g needs arrays of coordinates, so we need to build them.
         int size = points.size();
+        // Create empty arrays with fixed size.
         int[] x = new int[size];
         int[] y = new int[size];
         /*for (int i = 0; i < points.size(); i++) {
             x[i] = points.get(i).getX();
             y[i] = points.get(i).getY();
         }*/
+        // Iteration with an index variable declared outside and incremented in the loop.
         int i = 0;
         for (Point p : points) {
             x[i] = p.getX() + getOrigin().getX();

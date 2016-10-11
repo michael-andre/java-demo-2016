@@ -13,6 +13,10 @@ import fr.ecp.sio.demo.ui.DrawablePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +28,74 @@ public class Main {
     // It receives an array of strings as a parameters with optional arguments specified on execution.
     public static void main(String[] args) {
 
+        try {
+            // This method may throw IOException (see signature), which is a checked Exception.
+            // We must deal with the error case by wrapping the call in a tr-catch statement.
+            String json = getUrlContent("http://pastebin.com/raw/pHS3hzay");
+            System.out.println(json);
+        } catch (IOException e) {
+            // We get here if an IOException thrown by the above code.
+            // Here we simply log the error and terminate the program.
+            e.printStackTrace();
+            return;
+        }
+
+        List<DrawablePanel.Drawable> drawables = new ArrayList<>();
+        //TODO: Build a list of Drawables from a JSON definition.
+
+        // Let's instantiate our custom panel to display drawables.
+        DrawablePanel panel = new DrawablePanel(drawables);
+        panel.setBackground(Color.WHITE);
+
+        // UI classes are provided in the javax.swing.* package.
+        // We create a window, give it a size, add the panel (the default is fullscreen) and display it.
+        JFrame window = new JFrame("Photoshop");
+        window.setSize(640, 480);
+        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        window.add(panel);
+        window.setVisible(true);
+
+    }
+
+    /***
+     * Download the content of a URL and return it as a string.
+     * This version only makes use of builtin stream-manipulation classes.
+     * @throws IOException if anything goes wrong with the download process.
+     ***/
+    public static String getUrlContent(String spec) throws IOException {
+
+        // This constructor may throw MalformedUrlException if the "spec" parameter is not a valid URL.
+        // We don't catch the error here, instead it propagates to the calling method since our signature declares it.
+        URL url = new URL(spec);
+        // 1. Open a connection to the URL.
+        // 2. Get an InputStream from which we can read incoming data (low level function, byte per byte).
+        // 3. Create an InputStreamReader that is able to consume the InputStream data an process it.
+        // 4. Wrap it into a BufferedReader that adds the ability to read the content line by line thanks to a buffer.
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(
+                        url.openConnection().getInputStream()
+                )
+        );
+        // It is more efficient to use a StringBuilder rather than String concatenation (+) in a loop.
+        StringBuilder builder = new StringBuilder();
+
+        // At this point, no data has been transferred yet.
+
+        // Declare a variable that will hold the content of a line.
+        String line;
+        // In the same statement, get the next line from the builder, assign it to "line" and check if it is not null.
+        // The readLine() call is the one that actually makes the data transfer to happen.
+        // This "while" loop will break when the readLine() method will return null (content is all read).
+        while ((line = reader.readLine()) != null) {
+            builder.append(line);
+        }
+        // The transfer is done, always close() the readers, streams, etc. that we have used.
+        reader.close();
+        // Finally, return the content of the StringBuilder.
+        return builder.toString();
+    }
+
+    public static void demos() {
         // Primitive types
         int a = 0;
         long b = 1;
@@ -101,14 +173,6 @@ public class Main {
         polygon.addPoint(new Point(-50, 150));
         drawables.add(polygon);
 
-        DrawablePanel panel = new DrawablePanel(drawables);
-        panel.setBackground(Color.WHITE);
-
-        JFrame window = new JFrame("Photoshop");
-        window.setSize(640, 480);
-        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        window.add(panel);
-        window.setVisible(true);
-
     }
+
 }

@@ -53,6 +53,7 @@ public class Rectangle extends Shape {
 
     @Override
     public void draw(Graphics g) {
+        // Luckily g has a drawRect() whose parameters match our fields.
         g.drawRect(getOrigin().getX(), getOrigin().getY(), width, height);
     }
 
