@@ -4,6 +4,7 @@ package fr.ecp.sio.demo;
 
 // All classes referenced in the file that doesn't belong to the same package (strictly) require an import.
 // Imported classes can then be referred with their short name.
+import com.google.gson.*;
 import fr.ecp.sio.demo.model.*;
 import fr.ecp.sio.demo.model.Point;
 import fr.ecp.sio.demo.model.Polygon;
@@ -33,12 +34,52 @@ public class Main {
             // We must deal with the error case by wrapping the call in a tr-catch statement.
             String json = getUrlContent("http://pastebin.com/raw/pHS3hzay");
             System.out.println(json);
+
+            JsonParser parser  = new JsonParser();
+            JsonElement root = parser.parse(json);
+            if (!(root instanceof JsonArray)) {
+                System.out.println("Invalid JSON");
+                return;
+            }
+            JsonArray list = (JsonArray) root;
+            for (JsonElement e : list) {
+                if (!(e instanceof JsonObject)) {
+                    System.out.println("Invalid JSON");
+                    return;
+                }
+                JsonObject def = (JsonObject) e;
+                String type = def.get("type").getAsString();
+                /*if ("Rectangle".equalsIgnoreCase(type)) {
+                    Rectangle rectangle = new Rectangle();
+                } else if ("Circle".equalsIgnoreCase(type)) {
+
+                } else if ("Polygon".equalsIgnoreCase(type)) {
+
+                } else {
+                    // Silently ignore unknown shape.
+                }*/
+                switch (type.toLowerCase()) {
+                    case "rectangle":
+                        Rectangle rectangle = new Rectangle();
+                        break;
+                    case "circle":
+                        break;
+                    case "polygon":
+                        break;
+                    default:
+                        // Silently ignore unknown shape.
+                }
+            }
+
         } catch (IOException e) {
             // We get here if an IOException thrown by the above code.
             // Here we simply log the error and terminate the program.
             e.printStackTrace();
             return;
-        }
+        }/* catch (ClassCastException e) {
+            System.out.println("Invalid JSON");
+            return;
+        }*/
 
         List<DrawablePanel.Drawable> drawables = new ArrayList<>();
         //TODO: Build a list of Drawables from a JSON definition.
