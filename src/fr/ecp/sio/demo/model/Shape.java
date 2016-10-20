@@ -1,5 +1,6 @@
 package fr.ecp.sio.demo.model;
 
+import com.google.gson.JsonObject;
 import fr.ecp.sio.demo.ui.DrawablePanel;
 
 /**
@@ -24,6 +25,16 @@ public abstract class Shape implements DrawablePanel.Drawable {
     public Shape(Point origin) {
         // We disambiguation is needed (parameter and field have the same name), 'this' can be used to refer to the current instance.
         this.origin = origin;
+    }
+
+    public Shape(JsonObject config) {
+        if (config.has("x") && config.has("y")) {
+            int x = config.get("x").getAsInt();
+            int y = config.get("y").getAsInt();
+            this.origin = new Point(x, y);
+        } else {
+            this.origin = new Point(config.get("origin"));
+        }
     }
 
     // A getter hides the implementation & storage from the outside (encapsulation).

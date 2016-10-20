@@ -1,5 +1,9 @@
 package fr.ecp.sio.demo.model;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 /**
  * A simple point class to hold x and y values.
  */
@@ -13,6 +17,16 @@ public class Point /*extends Object*/ {
     public Point(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Point(JsonElement config) {
+        if (config instanceof JsonArray) {
+            this.x = ((JsonArray) config).get(0).getAsInt();
+            this.y = ((JsonArray) config).get(1).getAsInt();
+        } else if (config instanceof JsonObject) {
+            this.x = ((JsonObject) config).get("x").getAsInt();
+            this.y = ((JsonObject) config).get("y").getAsInt();
+        }
     }
 
     public int getX() {

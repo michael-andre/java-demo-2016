@@ -1,5 +1,8 @@
 package fr.ecp.sio.demo.model;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import java.awt.*;
 
 /**
@@ -26,6 +29,12 @@ public class Rectangle extends Shape {
         super(origin);
         this.width = width;
         this.height = height;
+    }
+
+    public Rectangle(JsonObject config) {
+        super(config);
+        this.width = config.get("width").getAsInt();
+        this.height = config.get("height").getAsInt();
     }
 
     public int getWidth() {

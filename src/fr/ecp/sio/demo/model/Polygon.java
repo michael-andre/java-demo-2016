@@ -1,5 +1,9 @@
 package fr.ecp.sio.demo.model;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +12,14 @@ import java.util.List;
  * A polygon defined by a list of points, relative to the origin.
  */
 public class Polygon extends Shape {
+
+    public Polygon() { }
+
+    public Polygon(JsonObject config) {
+        super(config);
+        JsonArray points = config.get("points").getAsJsonArray();
+        for (JsonElement e : points) addPoint(new Point(e));
+    }
 
     // A polygon if defined by a list of points.
     // We declare the field as a List (interface) because we are ony interested in using its capabilities.

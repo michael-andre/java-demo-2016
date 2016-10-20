@@ -1,5 +1,7 @@
 package fr.ecp.sio.demo.model;
 
+import com.google.gson.JsonObject;
+
 import java.awt.*;
 
 /**
@@ -15,6 +17,11 @@ public class Circle extends Shape {
     public Circle(Point origin, int radius) {
         super(origin);
         this.radius = radius;
+    }
+
+    public Circle(JsonObject config) {
+        super(config);
+        this.radius = config.get("radius").getAsInt();
     }
 
     public int getRadius() {

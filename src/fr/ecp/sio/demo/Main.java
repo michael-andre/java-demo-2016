@@ -4,7 +4,10 @@ package fr.ecp.sio.demo;
 
 // All classes referenced in the file that doesn't belong to the same package (strictly) require an import.
 // Imported classes can then be referred with their short name.
+
 import com.google.gson.*;
+import fr.ecp.sio.demo.gson.PointDeserializer;
+import fr.ecp.sio.demo.gson.ShapeDeserializer;
 import fr.ecp.sio.demo.model.*;
 import fr.ecp.sio.demo.model.Point;
 import fr.ecp.sio.demo.model.Polygon;
@@ -19,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 // Everything is object in Java, so the entry point of this console application must be in a class.
@@ -27,62 +31,26 @@ public class Main {
 
     // The main() method is the entry point of our application.
     // It receives an array of strings as a parameters with optional arguments specified on execution.
-    public static void main(String[] args) {
+    public static void main(String... args) {
+
+        List<DrawablePanel.Drawable> drawables;
 
         try {
             // This method may throw IOException (see signature), which is a checked Exception.
             // We must deal with the error case by wrapping the call in a tr-catch statement.
-            String json = getUrlContent("http://pastebin.com/raw/pHS3hzay");
+            String json = getUrlContent("http://pastebin.com/raw/DX76AJbk");
+            //String json = getUrlContent("http://pastebin.com/raw/gFpQEYUM");
             System.out.println(json);
 
-            JsonParser parser  = new JsonParser();
-            JsonElement root = parser.parse(json);
-            if (!(root instanceof JsonArray)) {
-                System.out.println("Invalid JSON");
-                return;
-            }
-            JsonArray list = (JsonArray) root;
-            for (JsonElement e : list) {
-                if (!(e instanceof JsonObject)) {
-                    System.out.println("Invalid JSON");
-                    return;
-                }
-                JsonObject def = (JsonObject) e;
-                String type = def.get("type").getAsString();
-                /*if ("Rectangle".equalsIgnoreCase(type)) {
-                    Rectangle rectangle = new Rectangle();
-                } else if ("Circle".equalsIgnoreCase(type)) {
+            //drawables = parseDrawablesBasic(json);
+            drawables = parseDrawables(json);
 
-                } else if ("Polygon".equalsIgnoreCase(type)) {
-
-                } else {
-                    // Silently ignore unknown shape.
-                }*/
-                switch (type.toLowerCase()) {
-                    case "rectangle":
-                        Rectangle rectangle = new Rectangle();
-                        break;
-                    case "circle":
-                        break;
-                    case "polygon":
-                        break;
-                    default:
-                        // Silently ignore unknown shape.
-                }
-            }
-
-        } catch (IOException e) {
-            // We get here if an IOException thrown by the above code.
+        } catch (IOException | InvalidGeometryException e) {
+            // We get here if an IOException or a InvalidGeometryException is thrown by the above code.
             // Here we simply log the error and terminate the program.
             e.printStackTrace();
             return;
-        }/* catch (ClassCastException e) {
-            System.out.println("Invalid JSON");
-            return;
-        }*/
-
-        List<DrawablePanel.Drawable> drawables = new ArrayList<>();
-        //TODO: Build a list of Drawables from a JSON definition.
+        }
 
         // Let's instantiate our custom panel to display drawables.
         DrawablePanel panel = new DrawablePanel(drawables);
@@ -134,6 +102,69 @@ public class Main {
         reader.close();
         // Finally, return the content of the StringBuilder.
         return builder.toString();
+    }
+
+    public static List<DrawablePanel.Drawable> parseDrawablesBasic(String json) throws InvalidGeometryException {
+
+        List<DrawablePanel.Drawable> drawables = new ArrayList<>();
+
+        JsonParser parser = new JsonParser();
+        JsonElement root = parser.parse(json);
+        if (!(root instanceof JsonArray)) {
+            throw new InvalidGeometryException("Invalid root");
+        }
+        JsonArray list = (JsonArray) root;
+        for (JsonElement e : list) {
+            if (!(e instanceof JsonObject)) {
+                throw new InvalidGeometryException("Invalid item");
+            }
+            JsonObject def = (JsonObject) e;
+            String type = def.get("type").getAsString();
+                /*if ("Rectangle".equalsIgnoreCase(type)) {
+                    Rectangle rectangle = new Rectangle();
+                } else if ("Circle".equalsIgnoreCase(type)) {
+
+                } else if ("Polygon".equalsIgnoreCase(type)) {
+
+                } else {
+                    // Silently ignore unknown shape.
+                }*/
+                /*switch (type.toLowerCase()) {
+                    case "rectangle":
+                        drawables.add(new Rectangle(def));
+                        break;
+                    case "circle":
+                        drawables.add(new Circle(def));
+                        break;
+                    case "polygon":
+                        drawables.add(new Polygon(def));
+                        break;
+                    default:
+                        // Silently ignore unknown shape.
+                }*/
+
+            try {
+                Class<? extends DrawablePanel.Drawable> drawableClass = (Class<? extends DrawablePanel.Drawable>) Class.forName("fr.ecp.sio.demo.model." + type);
+                DrawablePanel.Drawable drawable = drawableClass
+                        .getConstructor(JsonObject.class)
+                        .newInstance(def);
+                drawables.add(drawable);
+            } catch (ReflectiveOperationException exception) {
+                throw new InvalidGeometryException("Unable to instantiate element", exception);
+            }
+        }
+
+        return drawables;
+
+    }
+
+    public static List<DrawablePanel.Drawable> parseDrawables(String json) throws InvalidGeometryException {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Shape.class, new ShapeDeserializer())
+                .registerTypeAdapter(Point.class, new PointDeserializer())
+                .create();
+        Shape[] shape = gson.fromJson(json, Shape[].class);
+        return Arrays.asList(shape);
     }
 
     public static void demos() {
@@ -190,7 +221,7 @@ public class Main {
 
         // Arrays must be instantiated with a fixed size.
         double[] array = new double[3];
-        array = new double[] { 1.2, 3.8 };
+        array = new double[]{1.2, 3.8};
         array[1] = 2;
         System.out.println("Array size is " + array.length);
 
